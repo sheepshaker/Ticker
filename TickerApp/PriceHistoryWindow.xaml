@@ -9,10 +9,7 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="{Binding Key}"></TextBlock>
-            <!--<ListView HorizontalAlignment="Stretch" ItemsSource="{Binding Value.AllPrices}">
-                
-            </ListView>-->
-        <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.AllPrices}">
+            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.AllPrices}">
             <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding}"/>
             </DataGrid.Columns>

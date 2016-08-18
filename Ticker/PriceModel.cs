@@ -34,6 +34,32 @@ namespace Ticker
             }
         }
 
+        public PriceChange PriceChange
+        {
+            get
+            {
+                PriceChange priceChange = PriceChange.Constant;
+
+                if (Count > 1)
+                {
+                    var prices = PeekMultiple(2).ToArray();
+                    var curPrice = prices[0];
+                    var prevPrice = prices[1];
+
+                    if (curPrice > prevPrice)
+                    {
+                        priceChange = PriceChange.Increasing;
+                    }
+                    else
+                    {
+                        priceChange = PriceChange.Decreasing;
+                    }
+                }
+
+                return priceChange;
+            }            
+        }
+
         public PriceModel(decimal currentPrice) : base(currentPrice, MaxPrices)
         {
 
@@ -46,6 +72,14 @@ namespace Ticker
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("CurrentPrice"));
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("AveragePrice"));
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("AllPrices"));
+            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("PriceChange"));
         }
+    }
+
+    public enum PriceChange
+    {
+        Increasing,
+        Decreasing,
+        Constant
     }
 }

@@ -20,18 +20,7 @@ namespace TickerApp
     {
         public PriceHistoryWindow()
         {
-            //DataContext = new MyContext();
-
             InitializeComponent();
-
-            Loaded += PriceHistoryWindow_Loaded;
-        }
-
-        private void PriceHistoryWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            //DataContext = new MyContext();
-            //var x = DataContext;
-
         }
     }
 }
