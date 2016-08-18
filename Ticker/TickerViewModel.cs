@@ -6,51 +6,94 @@ using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Ticker
 {
-    public class TickerViewModel
+    public class TickerViewModel : IDisposable
     {
-        public ObservableConcurrentDictionary<string, ObservableMaxStack<decimal>> Model { get; set; }
-        public string TestN { get { return "jack"; } }
-        public decimal TestValue { get { return 12345.12345m; } }
-        public ObservableCollection<TestClass> Model2 { get; set; }
-        TaskFactory uiFactory;
+        public ObservableConcurrentDictionary<string, PriceModel> Model { get; set; }
+
+        private TaskFactory uiFactory;
+        private FileStream _fs;
+        private StreamReader _sr;
 
         public TickerViewModel()
         {
-            Model = new ObservableConcurrentDictionary<string, ObservableMaxStack<decimal>>();
-            var stack = new ObservableMaxStack<decimal>(10);
-            stack.Push(1);
-            stack.Push(2);
-            stack.Push(3);
-            stack.Push(4);
-            stack.Push(5);
-            Model.Add("test", stack);
-            Model2 = new ObservableCollection<TestClass> { new TestClass { TestName = "test1" }, new TestClass { TestName = "test2" }, new TestClass { TestName = "test3" } };
-
+            Model = new ObservableConcurrentDictionary<string, PriceModel>();
             uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
-
-
+            
             _timer = new Timer(s => 
             {
-                uiFactory.StartNew(() => {
-                    var curVal = Model["test"].Peek();
-                    Model["test"].Push(curVal + 1);
-                });
+                for(int i=0; i<5; i++)
+                {
+                    try
+                    {
+                        var str = ReadOneLine();
+                        var dto = new TickerModelDTO(str);
+                        uiFactory.StartNew(() =>
+                        {
+                            if(Model.ContainsKey(dto.Symbol) == false)
+                            {
+                                Model.Add(dto.Symbol, new PriceModel(dto.Price));
+                            }
+
+                            Model[dto.Symbol].Push(dto.Price);
+                        });
+                    }
+                    catch(Exception ex)
+                    {
+                        //tbd log
+                    }
+                }
             });
 
-            _timer.Change(0, 100);
+            _timer.Change(0, 1000);
+
+            _fs = new FileStream("Sample Data.txt", FileMode.Open);
+            _sr = new StreamReader(_fs, Encoding.Default);
         }
 
-        Timer _timer; 
-    }
+        ~TickerViewModel()
+        {
+            Dispose(false);
+        }
 
-    public class TestClass
-    {
-        private string _testName = "testName";
-        public string TestName {
-            get { return _testName; }
-            set { _testName = value; } }
+        Timer _timer;
+
+        private string ReadOneLine()
+        {
+            if(_sr.EndOfStream)
+            {
+                _sr.BaseStream.Seek(0, SeekOrigin.Begin);
+            }
+
+            return _sr.ReadLine();
+        }
+
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            _disposed = true;
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                // get rid of managed resources
+                _timer.Dispose();
+            }
+
+            // get rid of unmanaged resources
+            _sr.Dispose();
+            _fs.Dispose();
+        }
     }
 }

@@ -18,8 +18,9 @@
         <TextBlock Text="{Binding TestValue}"/>
             <DataGrid Name="x" HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding Model}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Symbol" Binding="{Binding Key}"/>
-                    <DataGridTextColumn Header="Latest Price" Binding="{Binding Value.Top}"/>
+                    <DataGridTextColumn Header="Instrument Name" Binding="{Binding Key, StringFormat=N2}"/>
+                    <DataGridTextColumn Header="Current Price" Binding="{Binding Value.CurrentPrice, StringFormat=N2}"/>
+                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice, StringFormat=N2}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

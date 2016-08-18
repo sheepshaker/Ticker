@@ -94,7 +94,7 @@ namespace Ticker
         #region Fields
 
         private int _limit;
-        private LinkedList<T> _list;
+        private LinkedList<T> _list = new LinkedList<T>();
 
         #endregion
 
@@ -103,14 +103,18 @@ namespace Ticker
         public ObservableMaxStack(int maxSize)
         {
             _limit = maxSize;
-            _list = new LinkedList<T>();
+        }
+
+        public ObservableMaxStack(T item, int maxSize) : this(maxSize)
+        {
+            Push(item);
         }
 
         #endregion
 
         #region Public Stack Implementation
 
-        public void Push(T value)
+        public virtual void Push(T value)
         {
             if (_list.Count == _limit)
             {
@@ -123,7 +127,6 @@ namespace Ticker
 
             _list.AddFirst(value);
 
-            OnPropertyChanged(new PropertyChangedEventArgs("Top"));
             this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, value));
         }
 
@@ -184,12 +187,17 @@ namespace Ticker
             return result;
         }
 
-        public T Top
+        protected T Top
         {
             get
             {
                 return Peek();
             }
+        }
+
+        protected IEnumerable<T> PeekMultiple(int count)
+        {
+            return _list.Take(count);
         }
 
         public bool Contains(T value)
