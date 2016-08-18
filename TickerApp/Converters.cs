@@ -13,39 +13,16 @@ namespace TickerApp
         {
             var priceChange = (Ticker.PriceChange)value;
 
-            if (priceChange == Ticker.PriceChange.Constant)
-            {
-                return Brushes.Black;
-            }
-            else if (priceChange == Ticker.PriceChange.Increasing)
+            if (priceChange == Ticker.PriceChange.Increasing)
             {
                 return Brushes.Green;
             }
-            else
+            else if(priceChange == Ticker.PriceChange.Decreasing)
             {
                 return Brushes.Red;
             }
-        }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-
-    public class TextColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            var priceChange = (Ticker.PriceChange)value;
-            if (priceChange == Ticker.PriceChange.Constant)
-            {
-                return Brushes.White;
-            }
-            else
-            { 
-                return Brushes.Black;
-            }
+            return Brushes.Transparent;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

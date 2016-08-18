@@ -15,8 +15,6 @@
 
     <Window.Resources>
         <local:CellColorConverter x:Key="CellColorConverter"/>
-        <local:TextColorConverter x:Key="TextColorConverter"/>
-
     </Window.Resources>
     
     <Grid>
@@ -24,38 +22,14 @@
             <DataGrid Name="watchlist" IsReadOnly="True" HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding Model}" MouseDoubleClick="watchlist_MouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Instrument Name" Binding="{Binding Key, StringFormat=N2}"/>
-                    <DataGridTextColumn Header="Current Price" Binding="{Binding Value.CurrentPrice, StringFormat=N2}">
-                        <!--<DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <MultiBinding Converter="{StaticResource CellColorConverter}">
-                                            <Binding Path="Value.PriceChange" />
-                                        </MultiBinding>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Foreground">
-                                    <Setter.Value>
-                                        <MultiBinding Converter="{StaticResource TextColorConverter}">
-                                            <Binding Path="Value.PriceChange" />
-                                        </MultiBinding>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-
-                        </DataGridTextColumn.ElementStyle>-->
+                    <DataGridTextColumn Header="Current Price" Binding="{Binding Value.CurrentPrice.Value, StringFormat=N2}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Background" Value="{Binding Value.PriceChange, Converter={StaticResource CellColorConverter}}"/>
-                                <Setter Property="Foreground" Value="{Binding Value.PriceChange, Converter={StaticResource TextColorConverter}}"/>
+                                <Setter Property="Background" Value="{Binding Value.CurrentPrice.Change, Converter={StaticResource CellColorConverter}}"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
-
-
-
-
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice, StringFormat=N2}"/>
+                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice, StringFormat=N2}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

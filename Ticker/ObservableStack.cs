@@ -28,11 +28,6 @@ namespace Ticker
             _limit = maxSize;
         }
 
-        public ObservableMaxStack(T item, int maxSize) : this(maxSize)
-        {
-            Push(item);
-        }
-
         #endregion
 
         #region Public Stack Implementation

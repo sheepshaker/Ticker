@@ -33,12 +33,27 @@ namespace Ticker
                         var dto = new TickerModelDTO(str);
                         uiFactory.StartNew(() =>
                         {
-                            if(Model.ContainsKey(dto.Symbol) == false)
+                            if (Model.ContainsKey(dto.Symbol) == false)
                             {
-                                Model.Add(dto.Symbol, new PriceModel(dto.Price));
+                                Price newPrice = new Price { Value = dto.Price, Change = PriceChange.Constant };
+                                Model.Add(dto.Symbol, new PriceModel(newPrice));
                             }
+                            else
+                            {
+                                Price currentPrice;
 
-                            Model[dto.Symbol].Push(dto.Price);
+                                var previousPrice = Model[dto.Symbol].Peek();
+                                if (previousPrice.Value > dto.Price)
+                                {
+                                    currentPrice = new Price { Value = dto.Price, Change = PriceChange.Decreasing };
+                                }
+                                else
+                                {
+                                    currentPrice = new Price { Value = dto.Price, Change = PriceChange.Increasing };
+                                }
+
+                                Model[dto.Symbol].Push(currentPrice);
+                            }
                         });
                     }
                     catch(Exception ex)

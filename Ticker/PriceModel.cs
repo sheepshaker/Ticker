@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Ticker
 {
-    public class PriceModel : ObservableMaxStack<decimal>
+    public class PriceModel : ObservableMaxStack<Price>
     {
         private const int AverageCount = 5;
         private const int MaxPrices = 10;
 
-        public decimal CurrentPrice
+        public Price CurrentPrice
         {
             get
             {
@@ -22,11 +22,11 @@ namespace Ticker
         {
             get
             {
-                return PeekMultiple(AverageCount).Average();
+                return PeekMultiple(AverageCount).Select(p => p.Value).Average();
             }
         }
 
-        public IEnumerable<decimal> AllPrices
+        public IEnumerable<Price> PriceHistory
         {
             get
             {
@@ -34,52 +34,60 @@ namespace Ticker
             }
         }
 
-        public PriceChange PriceChange
+        //public PriceChange PriceChange
+        //{
+        //    get
+        //    {
+        //        PriceChange priceChange = PriceChange.Constant;
+
+        //        if (Count > 1)
+        //        {
+        //            var prices = PeekMultiple(2).ToArray();
+        //            var curPrice = prices[0];
+        //            var prevPrice = prices[1];
+
+        //            if (curPrice > prevPrice)
+        //            {
+        //                priceChange = PriceChange.Increasing;
+        //            }
+
+        //            if (curPrice < prevPrice)
+        //            {
+        //                priceChange = PriceChange.Decreasing;
+        //            }
+        //        }
+
+        //        return priceChange;
+        //    }            
+        //}
+
+        public PriceModel(Price currentPrice) : base(MaxPrices)
         {
-            get
-            {
-                PriceChange priceChange = PriceChange.Constant;
-
-                if (Count > 1)
-                {
-                    var prices = PeekMultiple(2).ToArray();
-                    var curPrice = prices[0];
-                    var prevPrice = prices[1];
-
-                    if (curPrice > prevPrice)
-                    {
-                        priceChange = PriceChange.Increasing;
-                    }
-                    else
-                    {
-                        priceChange = PriceChange.Decreasing;
-                    }
-                }
-
-                return priceChange;
-            }            
+            Push(currentPrice);
         }
 
-        public PriceModel(decimal currentPrice) : base(currentPrice, MaxPrices)
-        {
-
-        }
-
-        public override void Push(decimal value)
+        public override void Push(Price value)
         {
             base.Push(value);
 
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("CurrentPrice"));
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("AveragePrice"));
-            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("AllPrices"));
-            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("PriceChange"));
+            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("PriceHistory"));
         }
     }
 
     public enum PriceChange
     {
+        Constant,
         Increasing,
-        Decreasing,
-        Constant
+        Decreasing
+    }
+
+    public class Price
+    {
+        public decimal Value { get; set; }
+        public PriceChange Change { get; set; }
+
+
     }
 }

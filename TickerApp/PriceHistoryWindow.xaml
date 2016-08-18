@@ -6,13 +6,24 @@
         xmlns:local="clr-namespace:TickerApp"
         mc:Ignorable="d"
         Title="PriceHistory" Height="300" Width="300">
+    
+    <Window.Resources>
+        <local:CellColorConverter x:Key="CellColorConverter"/>
+    </Window.Resources>
+    
     <Grid>
         <StackPanel>
             <TextBlock Text="{Binding Key}"></TextBlock>
-            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.AllPrices}">
+            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.PriceHistory}">
             <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding}"/>
-            </DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Value, StringFormat=N2}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Background" Value="{Binding Change, Converter={StaticResource CellColorConverter}}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
         </DataGrid>
         </StackPanel>
     </Grid>
