@@ -26,6 +26,14 @@ namespace Ticker
             }
         }
 
+        public IEnumerable<decimal> AllPrices
+        {
+            get
+            {
+                return PeekMultiple(MaxPrices);
+            }
+        }
+
         public PriceModel(decimal currentPrice) : base(currentPrice, MaxPrices)
         {
 
@@ -37,6 +45,7 @@ namespace Ticker
 
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("CurrentPrice"));
             OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("AveragePrice"));
+            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("AllPrices"));
         }
     }
 }

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:TickerApp"
         xmlns:vm="clr-namespace:Ticker;assembly=Ticker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+        >
     
     <Window.DataContext>
         <vm:TickerViewModel/>
@@ -14,9 +15,7 @@
     
     <Grid>
         <StackPanel>
-        <TextBlock Text="{Binding TestN}"/>
-        <TextBlock Text="{Binding TestValue}"/>
-            <DataGrid Name="x" HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding Model}">
+            <DataGrid Name="watchlist" IsReadOnly="True" HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" ItemsSource="{Binding Model}" MouseDoubleClick="watchlist_MouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Instrument Name" Binding="{Binding Key, StringFormat=N2}"/>
                     <DataGridTextColumn Header="Current Price" Binding="{Binding Value.CurrentPrice, StringFormat=N2}"/>

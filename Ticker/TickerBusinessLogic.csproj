@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ObservableConcurrentDictionary.cs" />
     <Compile Include="ObservableStack.cs" />
+    <Compile Include="PriceHistoryViewModel.cs" />
     <Compile Include="PriceModel.cs" />
     <Compile Include="TickerModelDTO.cs" />
     <Compile Include="TickerViewModel.cs" />
