@@ -22,6 +22,8 @@ namespace TickerApp
         public MainWindow()
         {
             InitializeComponent();
+
+            var z = x.DataContext;
         }
     }
 }
