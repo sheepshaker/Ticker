@@ -34,33 +34,6 @@ namespace Ticker
             }
         }
 
-        //public PriceChange PriceChange
-        //{
-        //    get
-        //    {
-        //        PriceChange priceChange = PriceChange.Constant;
-
-        //        if (Count > 1)
-        //        {
-        //            var prices = PeekMultiple(2).ToArray();
-        //            var curPrice = prices[0];
-        //            var prevPrice = prices[1];
-
-        //            if (curPrice > prevPrice)
-        //            {
-        //                priceChange = PriceChange.Increasing;
-        //            }
-
-        //            if (curPrice < prevPrice)
-        //            {
-        //                priceChange = PriceChange.Decreasing;
-        //            }
-        //        }
-
-        //        return priceChange;
-        //    }            
-        //}
-
         public PriceModel(Price currentPrice) : base(MaxPrices)
         {
             Push(currentPrice);
@@ -87,7 +60,5 @@ namespace Ticker
     {
         public decimal Value { get; set; }
         public PriceChange Change { get; set; }
-
-
     }
 }

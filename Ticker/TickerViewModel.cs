@@ -41,17 +41,21 @@ namespace Ticker
                             else
                             {
                                 Price currentPrice;
+                                PriceChange change = PriceChange.Constant;
 
                                 var previousPrice = Model[dto.Symbol].Peek();
                                 if (previousPrice.Value > dto.Price)
                                 {
-                                    currentPrice = new Price { Value = dto.Price, Change = PriceChange.Decreasing };
-                                }
-                                else
-                                {
-                                    currentPrice = new Price { Value = dto.Price, Change = PriceChange.Increasing };
+                                    change = PriceChange.Decreasing;
+                                    
                                 }
 
+                                if (previousPrice.Value < dto.Price)
+                                {
+                                    change = PriceChange.Increasing;
+                                }
+
+                                currentPrice = new Price { Value = dto.Price, Change = change };
                                 Model[dto.Symbol].Push(currentPrice);
                             }
                         });
