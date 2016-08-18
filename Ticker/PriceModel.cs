@@ -61,4 +61,23 @@ namespace Ticker
         public decimal Value { get; set; }
         public PriceChange Change { get; set; }
     }
+
+    public class NewPriceModel
+    {
+        public string Symbol { get; set; }
+        public decimal Price { get; set; }
+        public PriceChange PriceChange { get; set; }
+        public decimal AveragePrice { get; set; }
+        public PriceChange AveragePriceChange { get; set; }
+    }
+
+    public class NewPriceVM
+    {
+        Dictionary<string, List<NewPriceModel>> Model = new Dictionary<string, List<NewPriceModel>>();
+
+        public NewPriceVM()
+        {
+            Model.Add("test", )
+        }
+    }
 }

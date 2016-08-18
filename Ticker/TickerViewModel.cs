@@ -14,7 +14,7 @@ namespace Ticker
     {
         public ObservableConcurrentDictionary<string, PriceModel> Model { get; set; }
 
-        private TaskFactory uiFactory;
+        private TaskFactory uiFactory; //dispatching
         private FileStream _fs;
         private StreamReader _sr;
 
