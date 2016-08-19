@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using Ticker.VM;
 
 namespace TickerApp
 {
@@ -23,6 +24,27 @@ namespace TickerApp
         public MainWindow()
         {
             InitializeComponent();
+
+            Loaded += MainWindow_Loaded;
+            Unloaded += MainWindow_Unloaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            IViewModel vm = DataContext as IViewModel;
+            if(vm != null)
+            {
+                vm.OnViewLoaded();
+            }
+        }
+
+        private void MainWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            IViewModel vm = DataContext as IViewModel;
+            if (vm != null)
+            {
+                vm.OnViewUnloaded();
+            }
         }
 
         private void watchlist_MouseDoubleClick(object sender, MouseButtonEventArgs e)

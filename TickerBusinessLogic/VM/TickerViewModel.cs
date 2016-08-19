@@ -7,14 +7,15 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.ComponentModel;
 
-namespace Ticker
+namespace Ticker.VM
 {
-    public class TickerViewModel : IDisposable
+    public class TickerViewModel : BaseViewModel, IDisposable
     {
         public Dictionary<string, PriceObservableCollection> Model { get; set; }
 
-        private TaskFactory uiFactory; //dispatching
+        private TaskFactory _uiFactory; //dispatching
         private FileStream _fs;
         private StreamReader _sr;
         private Timer _timer;
@@ -22,19 +23,36 @@ namespace Ticker
         public TickerViewModel()
         {
             Model = new Dictionary<string, PriceObservableCollection>();
-            uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
-            
+            _uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
             _timer = new Timer(TimerCallback);
-
-            _timer.Change(0, 1000);
-
-            _fs = new FileStream("Sample Data.txt", FileMode.Open);
-            _sr = new StreamReader(_fs, Encoding.Default);
         }
 
         ~TickerViewModel()
         {
             Dispose(false);
+        }
+
+        public override void OnViewLoaded()
+        {
+            _fs = new FileStream("Sample Data.txt", FileMode.Open);
+            _sr = new StreamReader(_fs, Encoding.Default);
+            _timer.Change(0, 1000);
+
+            base.OnViewLoaded();
+        }
+
+        public override void OnViewUnloaded()
+        {
+            _timer.Dispose();
+            _timer = null;
+
+            _sr.Dispose();
+            _sr = null;
+
+            _fs.Dispose();
+            _fs = null;
+            
+            base.OnViewUnloaded();
         }
 
         private void TimerCallback(object status)
@@ -49,7 +67,7 @@ namespace Ticker
                         var dto = new TickerModelDTO(str);
 
                         //dispatch to UI thread
-                        uiFactory.StartNew(() =>
+                        _uiFactory.StartNew(() =>
                         {
                             if (Model.ContainsKey(dto.Symbol) == false)
                             {
@@ -94,12 +112,22 @@ namespace Ticker
             if (disposing)
             {
                 // get rid of managed resources
-                _timer.Dispose();
+                if (_timer != null)
+                {
+                    _timer.Dispose();
+                }
             }
 
             // get rid of unmanaged resources
-            _sr.Dispose();
-            _fs.Dispose();
+            if (_sr != null)
+            {
+                _sr.Dispose();
+            }
+
+            if (_fs != null)
+            {
+                _fs.Dispose();
+            }
         }
     }
 }
