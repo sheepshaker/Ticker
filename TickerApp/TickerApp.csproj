@@ -99,7 +99,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ticker\TickerBusinessLogic.csproj">
+    <ProjectReference Include="..\TickerBusinessLogic\TickerBusinessLogic.csproj">
       <Project>{afec1184-8a8c-4809-a1e2-b13723fcf420}</Project>
       <Name>TickerBusinessLogic</Name>
     </ProjectReference>

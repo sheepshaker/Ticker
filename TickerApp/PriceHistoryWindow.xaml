@@ -14,12 +14,12 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="{Binding Key}"></TextBlock>
-            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.PriceHistory}">
+            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.HistoricalPrices}">
             <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Value, StringFormat=N2}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Background" Value="{Binding Change, Converter={StaticResource CellColorConverter}}"/>
+                                <Setter Property="Foreground" Value="{Binding Change, Converter={StaticResource CellColorConverter}}"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>

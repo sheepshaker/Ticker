@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ticker</RootNamespace>
-    <AssemblyName>Ticker</AssemblyName>
+    <AssemblyName>TickerBusinessLogic</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,17 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObservableConcurrentDictionary.cs" />
-    <Compile Include="ObservableStack.cs" />
-    <Compile Include="PriceHistoryViewModel.cs" />
-    <Compile Include="PriceModel.cs" />
-    <Compile Include="TickerModelDTO.cs" />
-    <Compile Include="TickerViewModel.cs" />
+    <Compile Include="PriceObservableCollection.cs" />
+    <Compile Include="Model\PriceModel.cs" />
+    <Compile Include="Model\TickerModelDTO.cs" />
+    <Compile Include="VM\TickerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sample Data.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

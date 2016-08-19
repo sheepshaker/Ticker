@@ -23,13 +23,6 @@ namespace TickerApp
         public MainWindow()
         {
             InitializeComponent();
-
-            Loaded += MainWindow_Loaded;
-        }
-
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            var x = DataContext;
         }
 
         private void watchlist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -38,7 +31,5 @@ namespace TickerApp
             phw.DataContext = watchlist.SelectedItem;
             phw.Show();
         }
-
-
     }
 }

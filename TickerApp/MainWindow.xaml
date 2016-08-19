@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TickerApp"
-        xmlns:vm="clr-namespace:Ticker;assembly=Ticker"
+        xmlns:vm="clr-namespace:Ticker;assembly=TickerBusinessLogic"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
         >
@@ -25,11 +25,17 @@
                     <DataGridTextColumn Header="Current Price" Binding="{Binding Value.CurrentPrice.Value, StringFormat=N2}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Background" Value="{Binding Value.CurrentPrice.Change, Converter={StaticResource CellColorConverter}}"/>
+                                <Setter Property="Foreground" Value="{Binding Value.CurrentPrice.Change, Converter={StaticResource CellColorConverter}}"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice.Value, StringFormat=N2}" Width="*"/>
+                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice.Value, StringFormat=N2}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Foreground" Value="{Binding Value.AveragePrice.Change, Converter={StaticResource CellColorConverter}}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

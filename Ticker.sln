@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickerBusinessLogic", "Ticker\TickerBusinessLogic.csproj", "{AFEC1184-8A8C-4809-A1E2-B13723FCF420}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickerBusinessLogic", "TickerBusinessLogic\TickerBusinessLogic.csproj", "{AFEC1184-8A8C-4809-A1E2-B13723FCF420}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickerApp", "TickerApp\TickerApp.csproj", "{510E0709-F014-441F-9DEF-BD5685C463E6}"
 EndProject

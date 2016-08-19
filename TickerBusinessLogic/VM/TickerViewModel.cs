@@ -12,7 +12,7 @@ namespace Ticker
 {
     public class TickerViewModel : IDisposable
     {
-        public ObservableConcurrentDictionary<string, PriceObservableCollection> Model { get; set; }
+        public Dictionary<string, PriceObservableCollection> Model { get; set; }
 
         private TaskFactory uiFactory; //dispatching
         private FileStream _fs;
@@ -21,7 +21,7 @@ namespace Ticker
 
         public TickerViewModel()
         {
-            Model = new ObservableConcurrentDictionary<string, PriceObservableCollection>();
+            Model = new Dictionary<string, PriceObservableCollection>();
             uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
             
             _timer = new Timer(TimerCallback);
@@ -39,7 +39,7 @@ namespace Ticker
 
         private void TimerCallback(object status)
         {
-            lock (_timer)
+            lock (_timer)//one loop at a time
             {
                 for (int i = 0; i < 5; i++)
                 {
