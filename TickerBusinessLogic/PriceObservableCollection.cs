@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Ticker
 {
-    public class PriceObservableCollection : INotifyPropertyChanged
+    public class PriceObservableCollection : NotificationObject
     {
         int _limit;
         LinkedList<TickerModel> _prices = new LinkedList<TickerModel>();
@@ -99,16 +99,6 @@ namespace Ticker
             {
                 return _prices.Select(p => p.CurrentPrice);
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChangedEventArgs e = new PropertyChangedEventArgs(propertyName);
-
-            if(PropertyChanged != null)
-                PropertyChanged(this, e);
         }
     }
 }

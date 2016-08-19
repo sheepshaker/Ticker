@@ -39,8 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PriceObservableCollection.cs" />
     <Compile Include="Model\TickerModel.cs" />
+    <Compile Include="NotificationObject.cs" />
+    <Compile Include="PriceObservableCollection.cs" />
     <Compile Include="Model\TickerModelDTO.cs" />
     <Compile Include="VM\BaseViewModel.cs" />
     <Compile Include="VM\IViewModel.cs" />

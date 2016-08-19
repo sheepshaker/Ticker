@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ticker.VM
 {
-    public class BaseViewModel : IViewModel
+    public class BaseViewModel : NotificationObject, IViewModel
     {
         public virtual void OnViewLoaded()
         {

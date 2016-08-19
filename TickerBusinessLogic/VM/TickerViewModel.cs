@@ -22,9 +22,6 @@ namespace Ticker.VM
 
         public TickerViewModel()
         {
-            Model = new Dictionary<string, PriceObservableCollection>();
-            _uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
-            _timer = new Timer(TimerCallback);
         }
 
         ~TickerViewModel()
@@ -34,6 +31,12 @@ namespace Ticker.VM
 
         public override void OnViewLoaded()
         {
+            Model = new Dictionary<string, PriceObservableCollection>();
+            RaisePropertyChanged("Model");
+
+            _uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
+            _timer = new Timer(TimerCallback);
+
             _fs = new FileStream("Sample Data.txt", FileMode.Open);
             _sr = new StreamReader(_fs, Encoding.Default);
             _timer.Change(0, 1000);
@@ -55,7 +58,7 @@ namespace Ticker.VM
             base.OnViewUnloaded();
         }
 
-        private void TimerCallback(object status)
+        protected virtual void TimerCallback(object status)
         {
             lock (_timer)//one loop at a time
             {
@@ -119,6 +122,7 @@ namespace Ticker.VM
             }
 
             // get rid of unmanaged resources
+            //make sure the file is not left locked
             if (_sr != null)
             {
                 _sr.Dispose();

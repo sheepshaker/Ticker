@@ -53,8 +53,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TickerViewModelMock.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TickerBusinessLogic\TickerBusinessLogic.csproj">
+      <Project>{afec1184-8a8c-4809-a1e2-b13723fcf420}</Project>
+      <Name>TickerBusinessLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
