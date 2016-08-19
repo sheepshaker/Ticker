@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PriceObservableCollection.cs" />
-    <Compile Include="Model\PriceModel.cs" />
+    <Compile Include="Model\TickerModel.cs" />
     <Compile Include="Model\TickerModelDTO.cs" />
     <Compile Include="VM\BaseViewModel.cs" />
     <Compile Include="VM\IViewModel.cs" />

@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Ticker
 {
-    public class PriceModel
+    public class TickerModel
     {
         public Price CurrentPrice { get; set; }
         public Price AveragePrice { get; set; }

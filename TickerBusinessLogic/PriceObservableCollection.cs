@@ -10,7 +10,7 @@ namespace Ticker
     public class PriceObservableCollection : INotifyPropertyChanged
     {
         int _limit;
-        LinkedList<PriceModel> _prices = new LinkedList<PriceModel>();
+        LinkedList<TickerModel> _prices = new LinkedList<TickerModel>();
 
         public PriceObservableCollection(int limit)
         {
@@ -33,7 +33,7 @@ namespace Ticker
 
             Price newAveragePrice = new Price(averagePrice, currentAveragePrice);
 
-            PriceModel model = new PriceModel()
+            TickerModel model = new TickerModel()
             {
                 CurrentPrice = newCurrentPrice,
                 AveragePrice = newAveragePrice
@@ -106,7 +106,9 @@ namespace Ticker
         protected void RaisePropertyChanged(string propertyName)
         {
             PropertyChangedEventArgs e = new PropertyChangedEventArgs(propertyName);
-            PropertyChanged?.Invoke(this, e);
+
+            if(PropertyChanged != null)
+                PropertyChanged(this, e);
         }
     }
 }
