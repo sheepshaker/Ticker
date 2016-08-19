@@ -75,17 +75,44 @@ namespace Ticker
                     Change = PriceChange.Decreasing;
                 }
             }
+
+            Value = newPrice;
         }
     }
 
-    public class NewPriceModel
+    public class NewPriceModel : NotifyPropertyChangedBase
     {
-        //public string Symbol { get; set; }
-        public Price CurrentPrice { get; set; }
-        public Price AveragePrice { get; set; }
+        private Price _currentPrice;
+        private Price _averagePrice;
+
+        public Price CurrentPrice
+        {
+            get { return _currentPrice; }
+            set
+            {
+                if (_currentPrice != value)
+                {
+                    _currentPrice = value;
+                    RaisePropertyChanged("CurrentPrice");
+                }
+            }
+        }
+
+        public Price AveragePrice
+        {
+            get { return _averagePrice; }
+            set
+            {
+                if (_averagePrice != value)
+                {
+                    _averagePrice = value;
+                    RaisePropertyChanged("AveragePrice");
+                }
+            }
+        }
     }
 
-    public class PriceObservableCollection : INotifyPropertyChanged
+    public class PriceObservableCollection : NotifyPropertyChangedBase
     {
         int _limit;
         LinkedList<NewPriceModel> _prices = new LinkedList<NewPriceModel>();
@@ -170,25 +197,17 @@ namespace Ticker
             }
         }
 
+        
+    }
+
+    public class NotifyPropertyChangedBase : INotifyPropertyChanged
+    {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void RaisePropertyChanged(string propertyName)
+        protected void RaisePropertyChanged(string propertyName)
         {
             PropertyChangedEventArgs e = new PropertyChangedEventArgs(propertyName);
             PropertyChanged?.Invoke(this, e);
-        }
-    }
-
-    public class NewPriceVM
-    {
-        Dictionary<string, PriceObservableCollection> Model = new Dictionary<string, PriceObservableCollection>();
-
-        public NewPriceVM()
-        {
-            decimal newPrice = 666;
-
-
-            Model.Add("test", new PriceObservableCollection(10));
         }
     }
 }

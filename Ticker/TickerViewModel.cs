@@ -39,27 +39,30 @@ namespace Ticker
 
         private void TimerCallback(object status)
         {
-            for (int i = 0; i < 5; i++)
+            lock (_timer)
             {
-                try
+                for (int i = 0; i < 5; i++)
                 {
-                    var str = ReadOneLine();
-                    var dto = new TickerModelDTO(str);
-
-                    //dispatch to UI thread
-                    uiFactory.StartNew(() =>
+                    try
                     {
-                        if (Model.ContainsKey(dto.Symbol) == false)
-                        {
-                            Model.Add(dto.Symbol, new PriceObservableCollection(10));
-                        }
+                        var str = ReadOneLine();
+                        var dto = new TickerModelDTO(str);
 
-                        Model[dto.Symbol].Push(dto.Price);
-                    });
-                }
-                catch (Exception ex)
-                {
-                    //tbd log
+                        //dispatch to UI thread
+                        uiFactory.StartNew(() =>
+                        {
+                            if (Model.ContainsKey(dto.Symbol) == false)
+                            {
+                                Model.Add(dto.Symbol, new PriceObservableCollection(10));
+                            }
+
+                            Model[dto.Symbol].Push(dto.Price);
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        //tbd log
+                    }
                 }
             }
         }

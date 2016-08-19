@@ -29,7 +29,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice, StringFormat=N2}" Width="*"/>
+                    <DataGridTextColumn Header="Average Price" Binding="{Binding Value.AveragePrice.Value, StringFormat=N2}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
