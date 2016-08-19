@@ -12,60 +12,19 @@ namespace Ticker
 {
     public class TickerViewModel : IDisposable
     {
-        public ObservableConcurrentDictionary<string, PriceModel> Model { get; set; }
+        public ObservableConcurrentDictionary<string, PriceObservableCollection> Model { get; set; }
 
         private TaskFactory uiFactory; //dispatching
         private FileStream _fs;
         private StreamReader _sr;
+        private Timer _timer;
 
         public TickerViewModel()
         {
-            Model = new ObservableConcurrentDictionary<string, PriceModel>();
+            Model = new ObservableConcurrentDictionary<string, PriceObservableCollection>();
             uiFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
             
-            _timer = new Timer(s => 
-            {
-                for(int i=0; i<5; i++)
-                {
-                    try
-                    {
-                        var str = ReadOneLine();
-                        var dto = new TickerModelDTO(str);
-                        uiFactory.StartNew(() =>
-                        {
-                            if (Model.ContainsKey(dto.Symbol) == false)
-                            {
-                                Price newPrice = new Price { Value = dto.Price, Change = PriceChange.Constant };
-                                Model.Add(dto.Symbol, new PriceModel(newPrice));
-                            }
-                            else
-                            {
-                                Price currentPrice;
-                                PriceChange change = PriceChange.Constant;
-
-                                var previousPrice = Model[dto.Symbol].Peek();
-                                if (previousPrice.Value > dto.Price)
-                                {
-                                    change = PriceChange.Decreasing;
-                                    
-                                }
-
-                                if (previousPrice.Value < dto.Price)
-                                {
-                                    change = PriceChange.Increasing;
-                                }
-
-                                currentPrice = new Price { Value = dto.Price, Change = change };
-                                Model[dto.Symbol].Push(currentPrice);
-                            }
-                        });
-                    }
-                    catch(Exception ex)
-                    {
-                        //tbd log
-                    }
-                }
-            });
+            _timer = new Timer(TimerCallback);
 
             _timer.Change(0, 1000);
 
@@ -78,7 +37,32 @@ namespace Ticker
             Dispose(false);
         }
 
-        Timer _timer;
+        private void TimerCallback(object status)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                try
+                {
+                    var str = ReadOneLine();
+                    var dto = new TickerModelDTO(str);
+
+                    //dispatch to UI thread
+                    uiFactory.StartNew(() =>
+                    {
+                        if (Model.ContainsKey(dto.Symbol) == false)
+                        {
+                            Model.Add(dto.Symbol, new PriceObservableCollection(10));
+                        }
+
+                        Model[dto.Symbol].Push(dto.Price);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    //tbd log
+                }
+            }
+        }
 
         private string ReadOneLine()
         {
