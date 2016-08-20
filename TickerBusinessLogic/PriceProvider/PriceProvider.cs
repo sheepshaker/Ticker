@@ -23,12 +23,12 @@ namespace Ticker.PriceProvider
     {
         public event EventHandler<PriceUpdateEventArgs> PriceUpdate;
 
-        protected void RaisePriceUpdate(TickerModelDTO dto)
+        protected void RaisePriceUpdate(string symbol, decimal priceValue)
         {
             var temp = PriceUpdate;
             if (temp != null)
             {
-                temp(this, new PriceUpdateEventArgs { Symbol = dto.Symbol, PriceValue = dto.Price });
+                temp(this, new PriceUpdateEventArgs { Symbol = symbol, PriceValue = priceValue });
             }
         }
 

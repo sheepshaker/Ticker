@@ -40,6 +40,7 @@ namespace Ticker.Model
             };
 
             _prices.AddFirst(model);
+
             RaisePropertyChanged("CurrentPrice");
             RaisePropertyChanged("AveragePrice");
             RaisePropertyChanged("HistoricalPrices");

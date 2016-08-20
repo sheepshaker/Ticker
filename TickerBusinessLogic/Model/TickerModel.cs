@@ -26,18 +26,25 @@ namespace Ticker.Model
 
         public Price(decimal newPrice, Price currentPrice)
         {
+            var priceChange = PriceChange.Constant;
+
             if(currentPrice != null)
             {
                 if(newPrice > currentPrice.Value)
                 {
-                    Change = PriceChange.Increasing;
+                    priceChange = PriceChange.Increasing;
+                }
+                else if(newPrice < currentPrice.Value)
+                {
+                    priceChange = PriceChange.Decreasing;
                 }
                 else
                 {
-                    Change = PriceChange.Decreasing;
+                    priceChange = PriceChange.Constant;
                 }
             }
 
+            Change = priceChange;
             Value = newPrice;
         }
     }

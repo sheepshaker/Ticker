@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Ticker.Model;
 using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace Ticker.PriceProvider
@@ -33,17 +32,7 @@ namespace Ticker.PriceProvider
                     {
                         var str = ReadOneLine();
                         var dto = new TickerModelDTO(str);
-                        RaisePriceUpdate(dto);
-                        //dispatch to UI thread
-                        //_uiFactory.StartNew(() =>
-                        //{
-                        //    if (TickerMap.ContainsKey(dto.Symbol) == false)
-                        //    {
-                        //        TickerMap.Add(dto.Symbol, new PriceObservableCollection(10));
-                        //    }
-
-                        //    TickerMap[dto.Symbol].Push(dto.Price);
-                        //});
+                        RaisePriceUpdate(dto.Symbol, dto.Price);
                     }
                     catch (Exception ex)
                     {

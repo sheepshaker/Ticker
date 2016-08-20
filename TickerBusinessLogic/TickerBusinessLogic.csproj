@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\WatchlistModel.cs" />
     <Compile Include="Model\TickerModel.cs" />
     <Compile Include="NotificationObject.cs" />
     <Compile Include="Model\PriceObservableCollection.cs" />

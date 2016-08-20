@@ -5,7 +5,6 @@ using System.Text;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
 using System.ComponentModel;
 using Ticker.Model;
@@ -15,26 +14,18 @@ namespace Ticker.VM
 {
     public class TickerViewModel : BaseViewModel, IDisposable
     {
-        private TaskFactory _uiFactory = new TaskFactory(); //dispatching
         IPriceProvider _priceProvider;
 
         private Dictionary<string, PriceObservableCollection> _watchlist = new Dictionary<string, PriceObservableCollection>();
-        public Dictionary<string, PriceObservableCollection> Watchlist
+        public Dictionary<string, PriceObservableCollection> WatchlistMap
         {
             get { return _watchlist; }
-            private set
-            {
-                if (_watchlist != value)
-                {
-                    _watchlist = value;
-                    RaisePropertyChanged("Watchlist");
-                }
-            }
         }
 
         public TickerViewModel()
         {
             _priceProvider = new FilePriceProvider("Sample Data.txt");
+            _priceProvider.PriceUpdate += _priceProvider_PriceUpdate;
         }
 
         public TickerViewModel(IPriceProvider priceProvider)
@@ -45,11 +36,11 @@ namespace Ticker.VM
             }
 
             _priceProvider = priceProvider;
+            _priceProvider.PriceUpdate += _priceProvider_PriceUpdate;
         }
 
         public override void OnViewLoaded()
-        {
-            _priceProvider.PriceUpdate += _priceProvider_PriceUpdate;
+        {            
             _priceProvider.Start(1000);
 
             base.OnViewLoaded();
@@ -65,19 +56,27 @@ namespace Ticker.VM
 
         private void _priceProvider_PriceUpdate(object sender, PriceUpdateEventArgs e)
         {
-            //dispatch to UI thread
-            _uiFactory.StartNew(() =>
+            lock (WatchlistMap)
             {
-                lock (Watchlist)
+                if (WatchlistMap.ContainsKey(e.Symbol) == false)
                 {
-                    if (Watchlist.ContainsKey(e.Symbol) == false)
-                    {
-                        Watchlist.Add(e.Symbol, new PriceObservableCollection(10));
-                    }
-
-                    Watchlist[e.Symbol].Push(e.PriceValue);
+                    WatchlistMap.Add(e.Symbol, new PriceObservableCollection(10));
+                    RaisePropertyChanged("Watchlists");
                 }
-            });
+
+                WatchlistMap[e.Symbol].Push(e.PriceValue);
+            }
+        }
+
+        public IEnumerable<Watchlist> Watchlists
+        {
+            get
+            {
+                lock (WatchlistMap)
+                {
+                    return WatchlistMap.Select(w => new Watchlist { Symbol = w.Key, Prices = w.Value });
+                }
+            }
         }
 
         public void Dispose()
@@ -85,8 +84,16 @@ namespace Ticker.VM
             // get rid of managed resources
             if (_priceProvider != null)
             {
+                _priceProvider.PriceUpdate -= _priceProvider_PriceUpdate;
                 _priceProvider.Dispose();
+                _priceProvider = null;
             }
         }
+    }
+
+    public class Watchlist
+    {
+        public string Symbol { get; set; }
+        public PriceObservableCollection Prices { get; set; }
     }
 }
