@@ -9,57 +9,84 @@ using System.Threading.Tasks;
 using System.IO;
 using System.ComponentModel;
 using Ticker.Model;
+using Ticker.PriceProvider;
 
 namespace Ticker.VM
 {
     public class TickerViewModel : BaseViewModel, IDisposable
     {
-        public WatchlistModel WatchlistModel { get; private set; }
+        private TaskFactory _uiFactory = new TaskFactory(); //dispatching
+        IPriceProvider _priceProvider;
+
+        private Dictionary<string, PriceObservableCollection> _watchlist = new Dictionary<string, PriceObservableCollection>();
+        public Dictionary<string, PriceObservableCollection> Watchlist
+        {
+            get { return _watchlist; }
+            private set
+            {
+                if (_watchlist != value)
+                {
+                    _watchlist = value;
+                    RaisePropertyChanged("Watchlist");
+                }
+            }
+        }
 
         public TickerViewModel()
         {
-            WatchlistModel = new WatchlistModel();
+            _priceProvider = new FilePriceProvider("Sample Data.txt");
         }
 
-        public TickerViewModel(WatchlistModel watchlistModel)
+        public TickerViewModel(IPriceProvider priceProvider)
         {
-            if (watchlistModel == null)
+            if (priceProvider == null)
             {
-                throw new ArgumentNullException("watchlistModel");
+                throw new ArgumentNullException("priceProvider");
             }
 
-            WatchlistModel = watchlistModel;
+            _priceProvider = priceProvider;
         }
 
         public override void OnViewLoaded()
         {
-            WatchlistModel.Subscribe();
-            RaisePropertyChanged("WatchlistModel");
+            _priceProvider.PriceUpdate += _priceProvider_PriceUpdate;
+            _priceProvider.Start(1000);
 
             base.OnViewLoaded();
         }
 
         public override void OnViewUnloaded()
         {
-            WatchlistModel.Unsubscribe();
+            _priceProvider.Stop();
+            _priceProvider.PriceUpdate -= _priceProvider_PriceUpdate;
 
             base.OnViewUnloaded();
         }
 
-        private bool _disposed;
+        private void _priceProvider_PriceUpdate(object sender, PriceUpdateEventArgs e)
+        {
+            //dispatch to UI thread
+            _uiFactory.StartNew(() =>
+            {
+                lock (Watchlist)
+                {
+                    if (Watchlist.ContainsKey(e.Symbol) == false)
+                    {
+                        Watchlist.Add(e.Symbol, new PriceObservableCollection(10));
+                    }
+
+                    Watchlist[e.Symbol].Push(e.PriceValue);
+                }
+            });
+        }
 
         public void Dispose()
         {
-            if (_disposed)
-                return;
-
             // get rid of managed resources
-            if (WatchlistModel != null)
+            if (_priceProvider != null)
             {
-                WatchlistModel.Dispose();
+                _priceProvider.Dispose();
             }
-
-            _disposed = true;
         }
     }
 }

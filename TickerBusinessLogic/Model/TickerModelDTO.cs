@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ticker.Model
 {
-    class TickerModelDTO
+    public class TickerModelDTO
     {
         public TickerModelDTO(string data)
         {

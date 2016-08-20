@@ -44,8 +44,8 @@
     <Compile Include="NotificationObject.cs" />
     <Compile Include="Model\PriceObservableCollection.cs" />
     <Compile Include="Model\TickerModelDTO.cs" />
-    <Compile Include="PriceInjectors\FilePriceInjector.cs" />
-    <Compile Include="PriceInjectors\PriceInjector.cs" />
+    <Compile Include="PriceProvider\FilePriceProvider.cs" />
+    <Compile Include="PriceProvider\PriceProvider.cs" />
     <Compile Include="VM\BaseViewModel.cs" />
     <Compile Include="VM\IViewModel.cs" />
     <Compile Include="VM\TickerViewModel.cs" />

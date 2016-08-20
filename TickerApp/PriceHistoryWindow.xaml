@@ -13,8 +13,8 @@
     
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding Symbol}"></TextBlock>
-            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Prices.HistoricalPrices}">
+            <TextBlock Text="{Binding Key}"></TextBlock>
+            <DataGrid HorizontalAlignment="Stretch" AutoGenerateColumns="False" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Value.HistoricalPrices}">
             <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Value, StringFormat=N2}" Width="*">
                         <DataGridTextColumn.ElementStyle>
