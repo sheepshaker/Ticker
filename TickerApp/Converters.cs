@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Media;
+using Ticker.Model;
 
 namespace TickerApp
 {
@@ -11,13 +12,13 @@ namespace TickerApp
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var priceChange = (Ticker.PriceChange)value;
+            var priceChange = (PriceChange)value;
 
-            if (priceChange == Ticker.PriceChange.Increasing)
+            if (priceChange == PriceChange.Increasing)
             {
                 return Brushes.Green;
             }
-            else if(priceChange == Ticker.PriceChange.Decreasing)
+            else if(priceChange == PriceChange.Decreasing)
             {
                 return Brushes.Red;
             }

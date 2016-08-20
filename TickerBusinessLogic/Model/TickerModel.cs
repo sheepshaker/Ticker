@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
-namespace Ticker
+namespace Ticker.Model
 {
     public class TickerModel
     {

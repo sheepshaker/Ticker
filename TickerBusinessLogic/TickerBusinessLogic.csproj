@@ -39,10 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\WatchlistModel.cs" />
     <Compile Include="Model\TickerModel.cs" />
     <Compile Include="NotificationObject.cs" />
-    <Compile Include="PriceObservableCollection.cs" />
+    <Compile Include="Model\PriceObservableCollection.cs" />
     <Compile Include="Model\TickerModelDTO.cs" />
+    <Compile Include="PriceInjectors\FilePriceInjector.cs" />
+    <Compile Include="PriceInjectors\PriceInjector.cs" />
     <Compile Include="VM\BaseViewModel.cs" />
     <Compile Include="VM\IViewModel.cs" />
     <Compile Include="VM\TickerViewModel.cs" />

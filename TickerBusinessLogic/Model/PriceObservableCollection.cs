@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace Ticker
+namespace Ticker.Model
 {
     public class PriceObservableCollection : NotificationObject
     {
