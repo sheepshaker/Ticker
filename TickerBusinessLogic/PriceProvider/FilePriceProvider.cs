@@ -16,6 +16,16 @@ namespace Ticker.PriceProvider
 
         public FilePriceProvider(string fileName)
         {
+            if(string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentNullException("fileName");
+            }
+
+            if (File.Exists(fileName) == false)
+            {
+                throw new Exception(string.Format("File doesn't exist: {0}. Please make sure this file is in the same directory as the executable.", fileName));
+            }
+
             _timer = new Timer(TimerCallback);
 
             _fs = new FileStream(fileName, FileMode.Open);

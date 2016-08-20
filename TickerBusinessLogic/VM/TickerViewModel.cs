@@ -41,7 +41,7 @@ namespace Ticker.VM
 
         public override void OnViewLoaded()
         {            
-            _priceProvider.Start(1000);
+            _priceProvider.Start(100);
 
             base.OnViewLoaded();
         }
@@ -68,17 +68,6 @@ namespace Ticker.VM
             }
         }
 
-        public IEnumerable<Watchlist> Watchlists
-        {
-            get
-            {
-                lock (WatchlistMap)
-                {
-                    return WatchlistMap.Select(w => new Watchlist { Symbol = w.Key, Prices = w.Value });
-                }
-            }
-        }
-
         public void Dispose()
         {
             // get rid of managed resources
@@ -89,11 +78,5 @@ namespace Ticker.VM
                 _priceProvider = null;
             }
         }
-    }
-
-    public class Watchlist
-    {
-        public string Symbol { get; set; }
-        public PriceObservableCollection Prices { get; set; }
     }
 }

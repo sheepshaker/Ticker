@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using Ticker.Model;
+using Ticker.PriceProvider;
 
 namespace Test
 {
@@ -152,6 +153,20 @@ namespace Test
             Assert.AreEqual(_vm.WatchlistMap["symbol6"].HistoricalPrices.LastOrDefault().Value, 2);
         }
 
+        [TestMethod]
+        public void TestVmCreationException()
+        {
+            AssertException.Throws<ArgumentNullException>(() => { IViewModel vm = new TickerViewModel(null); });
+        }
+
+        [TestMethod]
+        public void TestFileProviderCreationException()
+        {
+            AssertException.Throws<ArgumentNullException>(() => { IPriceProvider provider = new FilePriceProvider(null); });
+            AssertException.Throws<ArgumentNullException>(() => { IPriceProvider provider = new FilePriceProvider(string.Empty); });
+            AssertException.Throws<Exception>(() => { IPriceProvider provider = new FilePriceProvider("?"); });
+        }
+
         private void AssertPropertyChanged<T>(T instance, Action<T> actionPropertySetter, string expectedPropertyName) where T : INotifyPropertyChanged
         {
             string actual = null;
@@ -184,6 +199,29 @@ namespace Test
             };
             actionPropertySetter.Invoke(instance);
             CollectionAssert.AreEqual(actualNames, expectedPropertyNames);
+        }
+
+        public static class AssertException
+        {
+            public static void Throws<T>(Action func) where T : Exception
+            {
+                var exceptionThrown = false;
+                try
+                {
+                    func.Invoke();
+                }
+                catch (T)
+                {
+                    exceptionThrown = true;
+                }
+
+                if (!exceptionThrown)
+                {
+                    throw new AssertFailedException(
+                        String.Format("An exception of type {0} was expected, but not thrown", typeof(T))
+                        );
+                }
+            }
         }
     }
 }
