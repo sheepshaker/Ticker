@@ -12,7 +12,7 @@ using Ticker.PriceProvider;
 
 namespace Ticker.VM
 {
-    public class TickerViewModel : BaseViewModel, IDisposable
+    public class TickerViewModel : ViewModelBase
     {
         IPriceProvider _priceProvider;
 
@@ -68,7 +68,7 @@ namespace Ticker.VM
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             // get rid of managed resources
             if (_priceProvider != null)
@@ -77,6 +77,8 @@ namespace Ticker.VM
                 _priceProvider.Dispose();
                 _priceProvider = null;
             }
+
+            base.Dispose();
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Ticker.Model
 {
-    public class TickerModelDTO
+    public class PriceModelDTO
     {
-        public TickerModelDTO(string data)
+        public PriceModelDTO(string data)
         {
             //parse data
             if (string.IsNullOrEmpty(data))

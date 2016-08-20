@@ -7,7 +7,7 @@ using Ticker.PriceProvider;
 
 namespace Test
 {
-    class TestPriceProvider : PriceProvider
+    class TestPriceProvider : PriceProviderBase
     {
         public void Push(string symbol, decimal priceValue)
         {

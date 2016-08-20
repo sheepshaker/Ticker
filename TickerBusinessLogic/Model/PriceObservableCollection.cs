@@ -10,7 +10,7 @@ namespace Ticker.Model
     public class PriceObservableCollection : NotificationObject
     {
         int _limit;
-        LinkedList<TickerModel> _prices = new LinkedList<TickerModel>();
+        LinkedList<PriceModel> _prices = new LinkedList<PriceModel>();
 
         public PriceObservableCollection(int limit)
         {
@@ -33,7 +33,7 @@ namespace Ticker.Model
 
             Price newAveragePrice = new Price(averagePrice, currentAveragePrice);
 
-            TickerModel model = new TickerModel()
+            PriceModel model = new PriceModel()
             {
                 CurrentPrice = newCurrentPrice,
                 AveragePrice = newAveragePrice

@@ -19,7 +19,7 @@ namespace Ticker.PriceProvider
         public decimal PriceValue { get; set; }
     }
 
-    public class PriceProvider : IPriceProvider
+    public class PriceProviderBase : IPriceProvider
     {
         public event EventHandler<PriceUpdateEventArgs> PriceUpdate;
 

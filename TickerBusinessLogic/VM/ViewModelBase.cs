@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ticker.VM
 {
-    public class BaseViewModel : NotificationObject, IViewModel
+    public class ViewModelBase : NotificationObject, IViewModel, IDisposable
     {
         public virtual void OnViewLoaded()
         {
@@ -13,6 +13,11 @@ namespace Ticker.VM
         }
 
         public virtual void OnViewUnloaded()
+        {
+
+        }
+
+        public virtual void Dispose()
         {
 
         }

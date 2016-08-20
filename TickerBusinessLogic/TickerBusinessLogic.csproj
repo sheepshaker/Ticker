@@ -39,13 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\TickerModel.cs" />
+    <Compile Include="Model\PriceModel.cs" />
     <Compile Include="NotificationObject.cs" />
     <Compile Include="Model\PriceObservableCollection.cs" />
-    <Compile Include="Model\TickerModelDTO.cs" />
+    <Compile Include="Model\PriceModelDTO.cs" />
     <Compile Include="PriceProvider\FilePriceProvider.cs" />
-    <Compile Include="PriceProvider\PriceProvider.cs" />
-    <Compile Include="VM\BaseViewModel.cs" />
+    <Compile Include="PriceProvider\PriceProviderBase.cs" />
+    <Compile Include="VM\ViewModelBase.cs" />
     <Compile Include="VM\IViewModel.cs" />
     <Compile Include="VM\TickerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

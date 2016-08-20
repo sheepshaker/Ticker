@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Ticker.PriceProvider
 {
-    public class FilePriceProvider : PriceProvider, IDisposable
+    public class FilePriceProvider : PriceProviderBase
     {
         private FileStream _fs;
         private StreamReader _sr;
@@ -41,7 +41,7 @@ namespace Ticker.PriceProvider
                     try
                     {
                         var str = ReadOneLine();
-                        var dto = new TickerModelDTO(str);
+                        var dto = new PriceModelDTO(str);
                         RaisePriceUpdate(dto.Symbol, dto.Price);
                     }
                     catch (Exception ex)
